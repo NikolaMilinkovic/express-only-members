@@ -1,0 +1,49 @@
+extends layout
+
+block content
+  nav 
+    ul
+      li
+        button(type="button", onclick="location.href='/';") Home
+      li
+        button(type="button", onclick="location.href='/sign-up';") Sign Up
+      li
+        button(type="button", onclick="location.href='/sign-in';") Sign In
+  h1 Welcome to Only Members
+  if(messages.length)
+    div(class="messages-container")
+      each message in messages
+        div(class="message-container")
+          h2= message.full_name
+          br
+          p= message.email
+          br
+          p= message.password 
+          br
+          p= message.access 
+          br
+          p= message.created_at
+      //- if(req.cookies.access === 'Guest') {
+      //-   // Render the form for guests
+      //-   res.render('guestForm', { title: 'Guest Form' });
+      //- } else {
+      //-   // Render the form for logged-in users
+      //-   res.render('userForm', { title: 'User Form' });
+      //- }
+      if(currentUser)
+        p ACESS FOUND LEGGO!
+      else 
+        p Are you logged in?
+
+  else
+    p No messages here.. Be the first one to leave a message!
+    if(currentUser)
+      p ACESS FOUND LEGGO!
+    else 
+      p Are you logged in?
+    //- if(req.cookies.access !== 'Guest')
+    //-   div(class="input-message-container")
+    //-     div(class="input-message-control-group")
+    //-       label(class="input-label" for="name") Full name
+    //-       input(name="full_name", placeholder="Please enter your full name", type="text", required)
+  

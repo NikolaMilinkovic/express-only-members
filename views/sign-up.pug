@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  nav 
+    ul
+      li
+        button(type="button", onclick="location.href='/';") Home
+      li
+        button(type="button", onclick="location.href='/sign-up';") Sign Up
+      li
+        button(type="button", onclick="location.href='/sign-in';") Sign In
+  div(class="sign-up-container")
+    h1 Sign Up
+    form(action="/sign-up", method="POST", class="sign-up-form")
+      div(class="sign-up-control-group")
+        label(class="input-label" for="name") Full name
+        input(name="full_name", placeholder="Please enter your full name", type="text", required)
+      div(class="sign-up-control-group")
+        label(class="input-label" for="email") Email
+        input(name="email", placeholder="Please enter your email", type="email", required)
+      div(class="sign-up-control-group")
+        label(class="input-label" for="password") Password
+        input(name="password", type="password", required)
+      button(type="submit" class="btn-submit") Sign Up
