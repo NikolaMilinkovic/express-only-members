@@ -3,8 +3,9 @@ extends layout
 block content
   nav 
     ul
-      li
-        button(type="button", onclick="location.href='/';") Home
+      if(user)
+        li
+          button(type="button", onclick="location.href='/';") Home
       li
         button(type="button", onclick="location.href='/sign-up';") Sign Up
       li
@@ -17,5 +18,5 @@ block content
         input(name="email", placeholder="Please enter your email", type="text", required)
       div(class="sign-in-control-group")
         label(class="input-label" for="password") Password
-        input(name="password", type="password", required)
+        input(name="password", type="password", placeholder="Please enter your password", required)
       button(type="submit" class="btn-submit") Sign In

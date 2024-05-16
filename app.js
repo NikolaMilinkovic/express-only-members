@@ -9,18 +9,18 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
+const cors = require('cors');
+const flash = require('connect-flash');
+const bcryptjs = require('bcryptjs');
 
-// MongoDB connection
+// ===============[ MongoDB connection ]=============== //
 const conn_string = process.env.DB_CONN;
 mongoose.connect(conn_string);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongo connection error'));
-
-
+// ===============[ \MongoDB connection ]=============== //
 
 const app = express();
-
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -33,15 +33,20 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(cors());
+app.options('*', cors());
+
 // =====================[ PASSPORT AUTHENTICATION ]=====================
 passport.use(
-  new LocalStrategy(async (email, password, done) => {
+  new LocalStrategy({ usernameField: 'email' }, async(email, password, done) => {
     try {
       const user = await User.findOne({ email: email });
+      const match = await bcryptjs.compare(password, user.password);
+
       if (!user) {
         return done(null, false, { message: "Incorrect email" });
       }
-      if (user.password !== password) {
+      if (!match) {
         return done(null, false, { message: "Incorrect password" });
       }
       return done(null, user);
@@ -51,26 +56,48 @@ passport.use(
   })
 );
 passport.serializeUser((user, done) => {
-  // const serializedUser = {
-  //   user_id: user.id,
-  //   user_access: user.access
-  // };
-  done(null, user.id);
+  const serializedUser = {
+    id: user.id,
+    access: user.access
+  };
+
+  done(null, serializedUser);
 })
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (serializedUser, done) => {
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(serializedUser.id);
     done(null, user);
   } catch(err) {
     done(err);
   }
 });
+// =====================[ \PASSPORT AUTHENTICATION ]=====================
+
+
+
+
+
+// =====================[ ROUTES ]=====================
+const indexRouter = require('./routes/index');
+const signUpRouter = require('./routes/sign-up');
+const signInRouter = require('./routes/sign-in');
+
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+app.use('/', indexRouter);
+app.use('/sign-up', signUpRouter);
+app.use('/sign-in', signInRouter);
+
+
 // NOTE, STALNO FEJLUJE LOGIN
 app.post(
   "/sign-in",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/sign-up"
+    failureRedirect: "/sign-in",
   })
 );
 app.get("/sign-out", (req, res, next) => {
@@ -81,19 +108,12 @@ app.get("/sign-out", (req, res, next) => {
     res.redirect("/");
   })
 })
-app.use((req, res, next) => {
-  res.locals.currentUser = req.user;
-  next();
-});
-// =====================[ \PASSPORT AUTHENTICATION ]=====================
-const indexRouter = require('./routes/index');
-const signUpRouter = require('./routes/sign-up');
-const signInRouter = require('./routes/sign-in');
+// =====================[ \ROUTES ]=====================
 
-app.use('/', indexRouter);
-app.use('/sign-up', signUpRouter);
-app.use('/sign-in', signInRouter);
 
+
+
+// =====================[ ERROR HANDLERS ]=====================
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -109,5 +129,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+// =====================[ \ERROR HANDLERS ]=====================
+
 
 module.exports = app;

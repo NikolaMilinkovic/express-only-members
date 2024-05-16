@@ -3,12 +3,16 @@ extends layout
 block content
   nav 
     ul
-      li
-        button(type="button", onclick="location.href='/';") Home
-      li
-        button(type="button", onclick="location.href='/sign-up';") Sign Up
-      li
-        button(type="button", onclick="location.href='/sign-in';") Sign In
+      if(currentUser)
+        li
+          button(type="button", onclick="location.href='/';") Home
+        li
+          button(type="button", onclick="location.href='/sign-out';") Log out
+      else
+        li
+          button(type="button", onclick="location.href='/sign-up';") Sign Up
+        li
+          button(type="button", onclick="location.href='/sign-in';") Sign In
   h1 Welcome to Only Members
   if(messages.length)
     div(class="messages-container")
@@ -32,13 +36,20 @@ block content
       //- }
       if(currentUser)
         p ACESS FOUND LEGGO!
+        p= currentUser.access
       else 
         p Are you logged in?
+        p= currentUser.access
 
   else
     p No messages here.. Be the first one to leave a message!
     if(currentUser)
       p ACESS FOUND LEGGO!
+      p= currentUser.access
+      p= currentUser.email
+      p= currentUser.password
+      p= currentUser.created_at 
+      p= currentUser.full_name
     else 
       p Are you logged in?
     //- if(req.cookies.access !== 'Guest')
