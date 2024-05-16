@@ -10,8 +10,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
 const cors = require('cors');
-const flash = require('connect-flash');
-const bcryptjs = require('bcryptjs');
+
 
 // ===============[ MongoDB connection ]=============== //
 const conn_string = process.env.DB_CONN;
@@ -19,6 +18,7 @@ mongoose.connect(conn_string);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongo connection error'));
 // ===============[ \MongoDB connection ]=============== //
+
 
 const app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -37,45 +37,9 @@ app.use(cors());
 app.options('*', cors());
 
 // =====================[ PASSPORT AUTHENTICATION ]=====================
-passport.use(
-  new LocalStrategy({ usernameField: 'email' }, async(email, password, done) => {
-    try {
-      const user = await User.findOne({ email: email });
-      const match = await bcryptjs.compare(password, user.password);
-
-      if (!user) {
-        return done(null, false, { message: "Incorrect email" });
-      }
-      if (!match) {
-        return done(null, false, { message: "Incorrect password" });
-      }
-      return done(null, user);
-    } catch (err) {
-      return done(err);
-    }
-  })
-);
-passport.serializeUser((user, done) => {
-  const serializedUser = {
-    id: user.id,
-    access: user.access
-  };
-
-  done(null, serializedUser);
-})
-passport.deserializeUser(async (serializedUser, done) => {
-  try {
-    const user = await User.findById(serializedUser.id);
-    done(null, user);
-  } catch(err) {
-    done(err);
-  }
-});
+// Imports Passport Auth methods from passport.js
+const passportAuth = require('./passport');
 // =====================[ \PASSPORT AUTHENTICATION ]=====================
-
-
-
-
 
 // =====================[ ROUTES ]=====================
 const indexRouter = require('./routes/index');
