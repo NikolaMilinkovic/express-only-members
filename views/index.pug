@@ -4,57 +4,51 @@ block content
   nav 
     ul
       if(currentUser)
+        if(currentUser.access === 'Guest')
+          li
+            button(type="button", onclick="location.href='/become-member';") Become a member
         li
           button(type="button", onclick="location.href='/';") Home
         li
           button(type="button", onclick="location.href='/sign-out';") Log out
+
       else
+        li
+          button(type="button", onclick="location.href='/';") Home
         li
           button(type="button", onclick="location.href='/sign-up';") Sign Up
         li
           button(type="button", onclick="location.href='/sign-in';") Sign In
-  h1 Welcome to Only Members
-  if(messages.length)
+  h1(class='landing-h1') Welcome to Only Members
+  div(class='landing-info')
+    h2 Everybody can send messages
+    h2 Non-members can only see titles and contents
+    h2 Only members can see the author and date
+  div(class='landing-page-content')
     div(class="messages-container")
-      each message in messages
-        div(class="message-container")
-          h2= message.full_name
-          br
-          p= message.email
-          br
-          p= message.password 
-          br
-          p= message.access 
-          br
-          p= message.created_at
-      //- if(req.cookies.access === 'Guest') {
-      //-   // Render the form for guests
-      //-   res.render('guestForm', { title: 'Guest Form' });
-      //- } else {
-      //-   // Render the form for logged-in users
-      //-   res.render('userForm', { title: 'User Form' });
-      //- }
-      if(currentUser)
-        p ACESS FOUND LEGGO!
-        p= currentUser.access
-      else 
-        p Are you logged in?
-        p= currentUser.access
-
-  else
-    p No messages here.. Be the first one to leave a message!
+      if(messages.length)
+        each message in messages
+          div(class="message-container")
+            //- TODO access rights display
+            div(class='message-content')
+              h3(class='message-title')= message.title
+              p(class='message')= message.message
+              if(currentUser && currentUser.access !== 'Guest')
+                h2= `Sent by: ${message.user.full_name}`
+            div(class='message-data')
+              div(class='msg-timestamp-container')
+                p(class='msg-timestamp')= `${message.formattedTimestamp}`
+              div(class='msg-num-of-likes-container')
+                p(class='msg-num-of-likes')= `Likes ${message.numOfLikes}`
+      else
+        p No messages here.. Be the first one to leave a message!
+        //- TO DO: Change to !==
     if(currentUser)
-      p ACESS FOUND LEGGO!
-      p= currentUser.access
-      p= currentUser.email
-      p= currentUser.password
-      p= currentUser.created_at 
-      p= currentUser.full_name
-    else 
-      p Are you logged in?
-    //- if(req.cookies.access !== 'Guest')
-    //-   div(class="input-message-container")
-    //-     div(class="input-message-control-group")
-    //-       label(class="input-label" for="name") Full name
-    //-       input(name="full_name", placeholder="Please enter your full name", type="text", required)
-  
+      div(class="input-message-container")
+        form(action="/new-message", method="POST", class='new-message-form')
+          div(class="new-message-inputs-container")
+            div(class="input-message-control-group")
+              input(name="title", placeholder="Title", type="text", required) 
+            div(class="input-message-control-group")
+              textarea(name="message", placeholder="Message", type="text", required) 
+          button(type="submit" class="btn-submit") Send

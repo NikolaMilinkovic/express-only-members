@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  nav 
+    ul
+      if(currentUser)
+        if(currentUser.access === 'Guest')
+          li
+            button(type="button", onclick="location.href='/become-member';") Become a member
+        li
+          button(type="button", onclick="location.href='/';") Home
+        li
+          button(type="button", onclick="location.href='/sign-out';") Log out
+  div(class="sign-in-container")
+    h1 Become a member 
+    form(action="/become-member", method="POST", class="sign-in-form")
+      p Enter a secret password in order to become a member 
+      p PS. password is: member_me!
+      div(class="sign-in-control-group")
+        label(class="input-label" for="password") Password
+        input(name="password", type="password", placeholder="Please enter the secret password", required, value= data && data ? data.password : '')
+        if errors && errors.length > 0
+          each error in errors
+            if error.path === 'password'
+              li(class='error-msg') #{error.msg}
+      button(type="submit" class="btn-submit") Submit

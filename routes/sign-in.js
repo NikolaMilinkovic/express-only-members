@@ -5,7 +5,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', asyncHandler(async (req, res, next) => {
-  res.render('sign-in');
+  res.render('sign-in', { errors: [], data: {} });
 }));
 
 

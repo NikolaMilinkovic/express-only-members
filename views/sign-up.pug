@@ -3,9 +3,8 @@ extends layout
 block content
   nav 
     ul
-      if(user)
-        li
-          button(type="button", onclick="location.href='/';") Home
+      li
+        button(type="button", onclick="location.href='/';") Home
       li
         button(type="button", onclick="location.href='/sign-up';") Sign Up
       li
@@ -15,11 +14,23 @@ block content
     form(action="/sign-up", method="POST", class="sign-up-form")
       div(class="sign-up-control-group")
         label(class="input-label" for="full_name") Full name
-        input(name="full_name", placeholder="Please enter your full name", type="text", required)
+        input(name="full_name", placeholder="Please enter your full name", type="text", required, value= data && data.full_name ? data.full_name : '')
+        if errors
+          each error in errors
+            if error.path === 'full_name'
+              li(class='error-msg') #{error.msg}
       div(class="sign-up-control-group")
         label(class="input-label" for="email") Email
-        input(name="email", placeholder="Please enter your email", type="email", required)
+        input(name="email", placeholder="Please enter your email", type="email", required, value= data && data.email ? data.email : '')
+        if errors
+          each error in errors
+            if error.path === 'email'
+              li(class='error-msg') #{error.msg}
       div(class="sign-up-control-group")
         label(class="input-label" for="password") Password
-        input(name="password", type="password", placeholder="Please enter your password", required)
+        input(name="password", type="password", placeholder="Please enter your password", required, value=data && data.password ? data.password : '')
+        if errors
+          each error in errors
+            if error.path === 'password'
+              li(class='error-msg') #{error.msg}
       button(type="submit" class="btn-submit") Sign Up

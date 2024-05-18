@@ -3,9 +3,8 @@ extends layout
 block content
   nav 
     ul
-      if(user)
-        li
-          button(type="button", onclick="location.href='/';") Home
+      li
+        button(type="button", onclick="location.href='/';") Home
       li
         button(type="button", onclick="location.href='/sign-up';") Sign Up
       li
@@ -15,8 +14,20 @@ block content
     form(action="/sign-in", method="POST", class="sign-in-form")
       div(class="sign-in-control-group")
         label(class="input-label" for="email") Email
-        input(name="email", placeholder="Please enter your email", type="text", required)
+        input(name="email", placeholder="Please enter your email", type="email", required, value= data && data.email ? data.email : '')
+        if errors && errors.length > 0
+          each error in errors
+            if error.path === 'email'
+              li(class='error-msg') #{error.msg}
+        if noUser && noUser.userError
+          li(class='error-msg') #{noUser.userError}
       div(class="sign-in-control-group")
         label(class="input-label" for="password") Password
-        input(name="password", type="password", placeholder="Please enter your password", required)
+        input(name="password", type="password", placeholder="Please enter your password", required, value= data && data ? data.password : '')
+        if errors && errors.length > 0
+          each error in errors
+            if error.path === 'password'
+              li(class='error-msg') #{error.msg}
+        if noUser && noUser.passwordError
+          li(class='error-msg') #{noUser.passwordError}
       button(type="submit" class="btn-submit") Sign In
