@@ -6,7 +6,18 @@ const router = express.Router();
 /* GET home page and fetch messages. */
 router.get('/', asyncHandler(async (req, res, next) => {
   try{
-    const messages = await Message.find().populate('user', 'full_name').sort({ timestamp: 1 }).exec();
+    const messages = await Message.find()
+      .populate('user', 'full_name')
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'userId',
+          model: 'User',
+          select: 'full_name'
+        }
+      })
+      .sort({ timestamp: 1 })
+      .exec();
 
     // With Chatgipity help cus i suck at programming and dates :)
     messages.forEach(message => {

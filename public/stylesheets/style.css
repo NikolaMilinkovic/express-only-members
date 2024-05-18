@@ -251,7 +251,7 @@ svg{
   box-sizing: border-box;
 }
 .comment-section{
-  margin-top: 1rem;
+  margin-top: 2rem;
   grid-column: span 2;
 }
 .comment-text-area{
@@ -274,6 +274,22 @@ svg{
 }
 .display-user-name{
   font-size: 12px;
+}
+.comment-container{
+  border-top: 2px solid gray;
+  grid-column: span 2;
+  padding: 1rem;
+}
+.comment{
+  color: lightgray;
+  list-style: none;
+  margin-bottom: 1rem;
+}
+.comment > li{
+  margin-left: 1rem;
+}
+.comment-user{
+  font-weight: bold;
 }
 /* Message Input form */
 .input-message-container{
@@ -314,7 +330,8 @@ svg{
   font-weight: bold;
 }
 .message{
-  font-size: 16px;
+  margin-top: 1rem;
+  font-size: 18px;
 }
 
 /* SIGN IN PAGE */

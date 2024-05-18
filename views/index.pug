@@ -35,9 +35,9 @@ block content
             //- TODO access rights display
             div(class='message-content')
               h3(class='message-title')= message.title
-              p(class='message')= message.message
               if(currentUser && currentUser.access !== 'Guest')
-                h2(class='display-user-name')= `Sent by: ${message.user.full_name}`
+                h2(class='display-user-name')= `Posted by: ${message.user.full_name}`
+              p(class='message')= message.message
             div(class='message-data')
               div(class='msg-timestamp-container')
                 p(class='msg-timestamp')= `${message.formattedTimestamp}`
@@ -51,12 +51,17 @@ block content
                 p(class='msg-num-of-likes' id=`like${message._id}`)!= `Likes: <br>${message.numOfLikes}`
             if(currentUser)
               div(class="comment-section")
-                if(message && message.comments.length > 0)
-                  each comment in comments
-                    li #{comment}
-                form(action="/post-comment", method="POST")
+                p Comments:
+                if(message && message.comments)
+                  div(class='comment-container')
+                    each comment in message.comments
+                      div(class='comment')
+                        p(class='comment-user') #{comment.userId.full_name}
+                        li #{comment.comment}
+                  //- p #{message.comments}
+                form(action=`/post-comment?messageId=${message._id}`, method="POST")
                   div(class="input-message-control-group")
-                    textarea(name="message", placeholder="Leave a comment!", type="text", required, class='comment-text-area') 
+                    textarea(name="message", placeholder="Leave a comment!", type="text", required, class='comment-text-area', value='') 
                     button(type="submit" class="btn-submit") Send
       else
         p No messages here.. Be the first one to leave a message!
