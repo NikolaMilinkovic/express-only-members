@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const User = require('../models/user');
 const router = express.Router();
 
-router.post('/', asyncHandler(async(req, res, next) => {
+router.get('/', asyncHandler(async(req, res, next) => {
   if(req.isAuthenticated()){
     console.log('AUTHENTICATED & API CALLED')
     try{

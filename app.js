@@ -65,6 +65,8 @@ const signInRouter = require('./routes/sign-in');
 const newMessageRouter = require('./routes/new-message');
 const becomeMemberRouter = require('./routes/become-member');
 const becomeGuestRouter = require('./routes/become-guest');
+const likeRouter = require('./routes/like');
+const postCommentRouter = require('./routes/post-comment');
 
 
 app.use((req, res, next) => {
@@ -77,6 +79,8 @@ app.use('/sign-in', signInRouter);
 app.use('/new-message', newMessageRouter);
 app.use('/become-member', becomeMemberRouter);
 app.use('/become-guest', becomeGuestRouter);
+app.use('/like', likeRouter);
+app.use('/post-comment', postCommentRouter);
 
 // NOTE, STALNO FEJLUJE LOGIN
 app.post(

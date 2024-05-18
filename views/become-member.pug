@@ -4,9 +4,6 @@ block content
   nav 
     ul
       if(currentUser)
-        if(currentUser.access === 'Guest')
-          li
-            button(type="button", onclick="location.href='/become-member';") Become a member
         li
           button(type="button", onclick="location.href='/';") Home
         li
