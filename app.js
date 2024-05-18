@@ -18,6 +18,22 @@ const conn_string = process.env.DB_CONN;
 mongoose.connect(conn_string);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongo connection error'));
+
+// Runs once to add a new document
+// db.once('open', async () => {
+//   console.log('MongoDB connected...');
+//   const Passwords = require('./models/access-passwords');
+//   try {
+//     const newPasswords = new Passwords({
+//       member_password: 'member_me!',
+//       admin_password: 'admin_me!'
+//     });
+//     await newPasswords.save();
+//     console.log('Password document inserted');
+//   } catch (err) {
+//     console.error('Error inserting password document:', err);
+//   }
+// });
 // ===============[ \MongoDB connection ]=============== //
 
 
@@ -48,6 +64,7 @@ const signUpRouter = require('./routes/sign-up');
 const signInRouter = require('./routes/sign-in');
 const newMessageRouter = require('./routes/new-message');
 const becomeMemberRouter = require('./routes/become-member');
+const becomeGuestRouter = require('./routes/become-guest');
 
 
 app.use((req, res, next) => {
@@ -59,7 +76,7 @@ app.use('/sign-up', signUpRouter);
 app.use('/sign-in', signInRouter);
 app.use('/new-message', newMessageRouter);
 app.use('/become-member', becomeMemberRouter);
-
+app.use('/become-guest', becomeGuestRouter);
 
 // NOTE, STALNO FEJLUJE LOGIN
 app.post(

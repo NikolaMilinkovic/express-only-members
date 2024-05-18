@@ -1,7 +1,6 @@
 const express = require('express');
 const asyncHandler = require("express-async-handler");
 const Message = require('../models/message');
-const message = require('../models/message');
 const router = express.Router();
 
 /* GET home page and fetch messages. */
@@ -27,10 +26,5 @@ router.get('/', asyncHandler(async (req, res, next) => {
     next(err);
   }
 }));
-  // if(req.isAuthenticated()){
-  //   res.render('index', { messages: messages });
-  // } else {
-  //   res.render('index', { messages: messages });
-  // }
 
 module.exports = router;

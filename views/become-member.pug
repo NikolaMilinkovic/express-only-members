@@ -19,8 +19,7 @@ block content
       div(class="sign-in-control-group")
         label(class="input-label" for="password") Password
         input(name="password", type="password", placeholder="Please enter the secret password", required, value= data && data ? data.password : '')
-        if errors && errors.length > 0
-          each error in errors
-            if error.path === 'password'
-              li(class='error-msg') #{error.msg}
+        if error
+          li(class='error-msg')!= error.message
+          p #{error.fetched}
       button(type="submit" class="btn-submit") Submit

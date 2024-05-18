@@ -1,0 +1,29 @@
+const express = require('express');
+const asyncHandler = require("express-async-handler");
+const User = require('../models/user');
+const router = express.Router();
+
+router.post('/', asyncHandler(async(req, res, next) => {
+  if(req.isAuthenticated()){
+    console.log('AUTHENTICATED & API CALLED')
+    try{
+        console.log(`User id is: ${req.user}`);
+        const updateUser = await User.findOneAndUpdate(
+          { _id: req.user._id },
+          { $set: { access: 'Guest' } },
+          { new: true }
+        );
+        console.log(updateUser);
+
+        return res.redirect('/')
+    } catch(err){
+      console.error("Error, something went wrong..:", err);
+      next(err);
+    }
+  } else {
+    return res.redirect('sign-in');
+  }
+}))
+
+
+module.exports = router;

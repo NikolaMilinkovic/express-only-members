@@ -7,6 +7,10 @@ block content
         if(currentUser.access === 'Guest')
           li
             button(type="button", onclick="location.href='/become-member';") Become a member
+        if(currentUser.access === 'Member')
+          li
+            form(action="/become-guest", method="POST", class="btn-form")
+              button(type="submit", class='btn-submit') Back to guest
         li
           button(type="button", onclick="location.href='/';") Home
         li
