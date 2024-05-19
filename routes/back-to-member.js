@@ -9,7 +9,7 @@ router.get('/', asyncHandler(async(req, res, next) => {
       console.log(`User id is: ${req.user}`);
       const updateUser = await User.findOneAndUpdate(
         { _id: req.user._id },
-        { $set: { access: 'Guest' } },
+        { $set: { access: 'Member' } },
         { new: true }
       );
       console.log(updateUser);

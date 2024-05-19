@@ -85,10 +85,20 @@ background-image: -webkit-linear-gradient(top,
   --text-color-white: white;
   --h1: bold max(20px, 3vw) / max(34px, 4vw) var(--text-color) var(--font-family);
   --message-background-color: #09146a;
+  --fade-in-timer: 0.65s;
 }
 body{
   background-color: var(--background-color);
   font-family: var(--font-family);
+}
+@keyframes fade-in {
+  from{
+    opacity: 0.1;
+    transform: translateY(60px)
+  } to {
+    opacity: 1;
+    transform: translateY(0px)
+  }
 }
 h1{
   font: var(--h1);
@@ -130,6 +140,7 @@ nav > ul > li > button:hover{
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
+  animation: fade-in var(--fade-in-timer) linear forwards;
 }
 .sign-up-container > h1 {
   margin-top: 5vh;
@@ -228,15 +239,17 @@ svg{
 .messages-container{
   display: flex;
   padding: 1rem;
+  gap: 2rem;
   flex-direction: column;
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-  min-width: 600px;
+  /* min-width: 600px; */
   max-width: 600px;
-  max-height: 60vh;
+  max-height: 50vh;
   overflow-y: scroll;
   overflow-x: hidden;
+  animation: fade-in var(--fade-in-timer) linear forwards;
 }
 .message-container{
   color: var(--text-color-white);
@@ -249,6 +262,7 @@ svg{
   padding: 1rem;
   margin-top: 0.5rem;
   box-sizing: border-box;
+  gap: 1rem;
 }
 .comment-section{
   margin-top: 2rem;
@@ -272,6 +286,26 @@ svg{
   display: flex;
   text-align: center;
 }
+.btn-remove-post{
+  padding: 0.5rem;
+  background-color: darkred;
+  color: #FFFFFF;
+  display: flex;
+  margin-left: auto;
+  margin-bottom: 0.5rem;
+}
+.btn-remove-post:hover{
+  padding: 0.5rem;
+  background-color: #FFFFFF;
+  color: darkred;
+  display: flex;
+  margin-left: auto;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+.comment-and-remove-button{
+  display: flex;
+}
 .display-user-name{
   font-size: 12px;
 }
@@ -284,6 +318,18 @@ svg{
   color: lightgray;
   list-style: none;
   margin-bottom: 1rem;
+  position: relative;
+}
+.btn-remove-comment{
+  position: absolute;
+  padding: 0.5rem;
+  color: white;
+  background-color: darkred;
+  right: 0px;
+}
+.btn-remove-comment:hover{
+  color: darkred;
+  background-color: #FFFFFF;
 }
 .comment > li{
   margin-left: 1rem;
@@ -291,6 +337,16 @@ svg{
 .comment-user{
   font-weight: bold;
 }
+.msg-timestamp{
+  text-align: center;
+  font-size: 12px;
+  color: lightgray;
+}
+
+
+
+
+
 /* Message Input form */
 .input-message-container{
   display: flex;
@@ -300,6 +356,7 @@ svg{
   margin-right: auto;
   min-width: 600px;
   max-width: 600px;
+  animation: fade-in var(--fade-in-timer) linear forwards;
 }
 .new-message-form{
   margin-top: 2rem;
@@ -326,12 +383,16 @@ svg{
   gap: 0.2rem;
 }
 .message-title{
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
+  border-bottom: 2px solid lightgray;
 }
 .message{
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   font-size: 18px;
+}
+.color-gray{
+  color: lightgray;
 }
 
 /* SIGN IN PAGE */
@@ -340,6 +401,7 @@ svg{
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
+  animation: fade-in var(--fade-in-timer) linear forwards;
 }
 .sign-in-container > h1 {
   margin-top: 5vh;
