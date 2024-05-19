@@ -3,7 +3,7 @@
 # Only Members
 Only members is a message board project where every user can leave his message on the board.<br>
 Users with **member** privilege can see additional informations on posts and leave a like/comment on a post.<br>
-While **admins** can remove the posts.
+While **admins** can remove the posts and comments.<br>
 
 Project is intended for practicing the use of: <br>
 - Express / Node.js
@@ -11,7 +11,7 @@ Project is intended for practicing the use of: <br>
 - Passport.js authentication and content display based on user access rights.
 - Use of MongoDB
 
-[Live Demo not available at the moment]() ✨
+[Live Demo](https://express-only-members.adaptable.app/) ✨
 
 ## Features
 - Passport.js user authentication
