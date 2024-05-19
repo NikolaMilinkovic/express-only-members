@@ -65,7 +65,8 @@ block content
                   div(class='comment-container')
                     each comment in message.comments
                       div(class='comment')
-                        button(type="button", onclick=`location.href='/remove-comment?messageId=${message._id}&commentId=${comment._id}';` class='btn-remove-comment') X
+                        if(currentUser && currentUser.access === 'Admin')
+                          button(type="button", onclick=`location.href='/remove-comment?messageId=${message._id}&commentId=${comment._id}';` class='btn-remove-comment') X
                         p(class='comment-user') #{comment.userId.full_name}
                         li #{comment.comment}
 
